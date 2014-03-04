@@ -16,7 +16,8 @@ describe Net::Webdav::Client do
   w = Net::Webdav::Client.new(url, username: username, password: password)
 
   #w.make_directory(path) 
-  w.put_file(path, io) 
+  w.put_file(path, io, true) 
   io.close
+  File.unlink("file")
 end
 

@@ -31,10 +31,10 @@ module Net
         Curl::Easy.download full_url(remote_file_path), local_file_path
       end
 
-      def put_file path, file, create_path = true
-        make_directory(path)
+      def put_file path, file, create_path = false
+        make_directory(path) if create_path
         curl = Curl::Easy.http_put full_url(path), file, &method(:auth)
-        raise curl.status unless [201, 204, 301].include?(curl.response_code)
+        raise curl.status unless [201, 204, 301, 403].include?(curl.response_code) # 301 and 403 shouldn't happen as long as the mkcol has '/' at the end
         curl 
       end
 
@@ -49,7 +49,7 @@ module Net
         path_parts.pop # take file name off the end
         path_parts.each do |part|
           parent_path = extpath.push(part).join("/")
-          url = URI.join("#{scheme}://#{hostname}#{(port.nil? || port == 80) ? "" : ":" + port}/", parent_path)
+          url = URI.join("#{scheme}://#{hostname}#{(port.nil? || port == 80) ? "" : ":" + port}/", "#{parent_path}/")
           curl = Curl::Easy.new(full_url(url))
           auth(curl)
           curl.http(:MKCOL)
