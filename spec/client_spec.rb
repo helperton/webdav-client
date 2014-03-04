@@ -3,11 +3,11 @@ require_relative '../lib/net/webdav/client'
 
 
 describe Net::Webdav::Client do
-  url = 'https://attachments.navigatingcancer.com'
-  path = 'navican-development/test1/test2/test3/cool.txt'
+  url = 'https://someserver.company.com'
+  path = 'development/test1/test2/test3/cool.txt'
   full_url = [url, path].join
-  username = 'navican'
-  password = 'xYXNIaZSUVAVGxZHD'
+  username = 'foo'
+  password = 'bar'
   fd = IO.sysopen("file", "w+")
   io = IO.new(fd)
   io.write("yay!!\n")
